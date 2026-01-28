@@ -100,7 +100,29 @@ const updateTweet = asyncHandler(async (req, res) => {
     //validate content
     //update tweet 
     //return response
-    
+    const{tweetId}=req.params
+    const {content}= req.body
+    if(!mongoose.isValidObjectId(tweetId)){
+        throw new ApiError(404,'Invalid tweet id!');
+    }
+
+    if(!content || !content.trim()){
+        throw new ApiError(400,"The content of tweet cannot be empty!");
+    }
+
+    const tweet= await Tweet.findOne({_id:tweetId,owner:req.user._id});
+
+    if(!tweet){
+        throw new ApiError(403,"An error occured. Either the tweet is not available or you are not the owner of the tweet!");
+    }
+
+    tweet.content=content.trim();
+    await tweet.save();
+
+    return res.status(200).json(
+        new ApiResponse(200,tweet,'Tweet updated successfully!')
+    )
+
 })
 
 const deleteTweet = asyncHandler(async (req, res) => {
@@ -109,6 +131,21 @@ const deleteTweet = asyncHandler(async (req, res) => {
     //call delete one method 
     //check if deletedcount>1
     // return response 
+
+    const {tweetId}=req.params;
+    if(!mongoose.isValidObjectId(tweetId)){
+        throw new ApiError(400,'Invalid tweet id!')
+    }
+
+    const deletedTweet= await Tweet.findOneAndDelete({_id:tweetId,owner:req.user._id});
+
+    if(!deletedTweet){
+        throw new ApiError(404,'Tweet not found')
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200,deletedTweet,"Tweet deletion successfull!")
+    )
 })
 
 export {
