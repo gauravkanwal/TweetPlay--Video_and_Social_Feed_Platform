@@ -30,8 +30,24 @@ const userSchema=new Schema(
             type:String, //cloudnary url
             required:true,
         },
+        avatarPublicId:{
+            type:String,
+            required:true,
+        },
+        avatarResourceType:{
+            type:String,
+            required:true,
+        },
         coverImage:{
             type:String, //cloudnary url
+        },
+        coverImagePublicId:{
+            type:String,
+            required:true,
+        },
+        coverImageResourceType:{
+            type:String,
+            required:true,
         },
         watchHistory:[
             {
