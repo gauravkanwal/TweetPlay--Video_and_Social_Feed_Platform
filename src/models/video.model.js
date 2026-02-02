@@ -9,10 +9,28 @@ const videoSchema=new Schema(
             type:String,//cloudnary url
             required:true,
         },
+        videoFilePublicId:{
+            type:String,//cloudnary url
+            required:true,
+        },
+        videoFileResourceType:{
+            type:String,//cloudnary url
+            required:true,
+        },
+
         thumbnail:{
             type:String,//cloudnary url
             required:true,
         },
+        thumbnailPublicId:{
+            type:String,//cloudnary url
+            required:true,
+        },
+        thumbnailResourceType:{
+            type:String,//cloudnary url
+            required:true,
+        },
+        
         title:{
             type:String,
             required:true,
