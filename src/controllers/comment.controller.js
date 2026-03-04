@@ -46,9 +46,23 @@ const getVideoComments = asyncHandler(async (req, res) => {
             }
         },
         {
+            $lookup:{
+                from:'likes',
+                localField:'_id',
+                foreignField:'comment',
+                as:'likes'
+            }
+        },
+        {
             $addFields:{
                 owner:{
                     $first:'$owner'
+                },
+                isLiked:{
+                    $in:[new mongoose.Types.ObjectId(req.user._id),'$likes.likedBy']
+                },
+                likes:{
+                    $size:'$likes',
                 }
             }
         },
@@ -57,7 +71,9 @@ const getVideoComments = asyncHandler(async (req, res) => {
                 content:1,
                 'owner.username':1,
                 'owner.avatar':1,
-                createdAt:1
+                createdAt:1,
+                isLiked:1,
+                likes:1,
             }
         }
     ])

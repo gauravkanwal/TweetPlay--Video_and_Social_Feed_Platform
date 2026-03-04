@@ -117,8 +117,8 @@ const getLikedVideos = asyncHandler(async (req, res) => {
     const likedVideos= Like.aggregate([
         {
             $match:{
-                likedBy:req.user._id,
-                video:{exists:true}
+                likedBy:new mongoose.Types.ObjectId(req.user._id),
+                video:{$exists:true}
             }
         },
         {
@@ -151,7 +151,7 @@ const getLikedVideos = asyncHandler(async (req, res) => {
         }
     ]);
 
-    const result=await Video.aggregatePaginate(likedVideos,options);
+    const result=await Like.aggregatePaginate(likedVideos,options);
 
     if(!result){
         throw new ApiError(400,'something went wrong while fetching liked videos')

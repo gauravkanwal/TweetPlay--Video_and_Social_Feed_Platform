@@ -65,9 +65,23 @@ const getUserTweets = asyncHandler(async (req, res) => {
             }
         },
         {
+            $lookup:{
+                from:'likes',
+                localField:'_id',
+                foreignField:'tweet',
+                as:'likes'
+            }
+        },
+        {
             $addFields:{
                 owner:{
                     $first:'$owner'
+                },
+                isLiked:{
+                    $in:[new mongoose.Types.ObjectId(req.user._id), '$likes.likedBy']
+                },
+                likes:{
+                    $size:'$likes'
                 }
             }
         },
