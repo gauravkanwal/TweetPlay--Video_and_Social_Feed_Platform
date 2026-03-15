@@ -1,0 +1,92 @@
+import { useState } from "react";
+
+const VideoCard = ({ video }) => {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      className="w-full cursor-pointer group"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ fontFamily: "'DM Sans', sans-serif" }}
+    >
+      {/* Thumbnail */}
+      <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-neutral-900">
+        <img
+          src={video.thumbnail}
+          alt={video.title}
+          className="w-full h-full object-cover transition-all duration-500 ease-out group-hover:scale-105 group-hover:brightness-105 brightness-90"
+        />
+
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/55 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+        {/* Play button */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div
+            className="w-12 h-12 rounded-full bg-white/15 backdrop-blur-md border border-white/30 flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-300"
+            style={{ transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)" }}
+          >
+            <div
+              className="w-0 h-0 ml-1"
+              style={{ borderStyle: "solid", borderWidth: "8px 0 8px 14px", borderColor: "transparent transparent transparent white" }}
+            />
+          </div>
+        </div>
+
+        {/* Duration badge */}
+        <span className="absolute bottom-2.5 right-2.5 bg-black/75 backdrop-blur-md text-white text-[11px] font-medium tracking-wide px-2 py-0.5 rounded border border-white/10">
+          {video.duration}
+        </span>
+      </div>
+
+      {/* Info */}
+      <div className="flex gap-3 mt-3.5">
+
+        {/* Avatar */}
+        <div className="relative flex-shrink-0">
+          <img
+            src={video.avatar}
+            alt={video.username}
+            className="w-9 h-9 rounded-full object-cover border-2 border-neutral-800 transition-colors duration-300 group-hover:border-orange-500"
+          />
+          <div
+            className="absolute inset-[-3px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            style={{ background: "linear-gradient(135deg, #f97316, #fb923c)", WebkitMask: "linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)", WebkitMaskComposite: "xor", maskComposite: "exclude", padding: "1.5px" }}
+          />
+        </div>
+
+        {/* Text */}
+        <div className="flex-1 min-w-0">
+          <h3
+            className="text-sm font-bold leading-snug line-clamp-2 text-neutral-100 group-hover:text-white transition-colors duration-200 tracking-tight"
+            style={{ fontFamily: "'Syne', sans-serif" }}
+          >
+            {video.title}
+          </h3>
+
+          <div className="flex items-center gap-1.5 mt-1.5">
+            <span className="text-[11.5px] text-orange-500 font-medium">@{video.username}</span>
+            <div className="w-0.5 h-0.5 rounded-full bg-neutral-600" />
+            <span className="text-[11.5px] text-neutral-500">{video.views} views · {video.date}</span>
+          </div>
+
+          {/* Watch progress bar */}
+          {video.progress && (
+            <div className="h-0.5 bg-neutral-800 rounded-full mt-2.5 overflow-hidden">
+              <div
+                className="h-full rounded-full transition-all duration-700 ease-out"
+                style={{
+                  width: hovered ? video.progress : "0%",
+                  background: "linear-gradient(90deg, #f97316, #fb923c)"
+                }}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default VideoCard;
