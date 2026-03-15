@@ -105,6 +105,75 @@ const getUserTweets = asyncHandler(async (req, res) => {
 
 })
 
+const getTweets = asyncHandler(async (req, res) => {
+    // TODO: get user tweets
+    //get user id from params
+    //in tweets match tweets where owner is given user id
+    //join with user(owner) add user.username and user.avatar fields
+    //apply pagination 
+    // return response : tweet createdAt
+    // const {userId}=req.params;
+    const {limit,page}=req.query;
+
+
+    const tweets= Tweet.aggregate([
+        {
+            $lookup:{
+                from:'users',
+                localField:'owner',
+                foreignField:'_id',
+                as:'owner',
+                pipeline:[
+                    {
+                        $project:{
+                            username:1,
+                            avatar:1
+                        }
+                    },
+                ]
+            }
+        },
+        {
+            $lookup:{
+                from:'likes',
+                localField:'_id',
+                foreignField:'tweet',
+                as:'likes'
+            }
+        },
+        {
+            $addFields:{
+                owner:{
+                    $first:'$owner'
+                },
+                isLiked:{
+                    $in:[new mongoose.Types.ObjectId(req.user._id), '$likes.likedBy']
+                },
+                likes:{
+                    $size:'$likes'
+                }
+            }
+        },
+        {
+            $sort:{
+                createdAt:-1
+            }
+        }
+    ])
+
+    const options={
+        limit:parseInt(limit) || 10,
+        page:parseInt(page) || 1,
+    }
+
+    const result=await Tweet.aggregatePaginate(tweets,options);
+
+    return res.status(200).json(
+        new ApiResponse(200,result,'Tweets fetched successfully!')
+    )
+
+})
+
 const updateTweet = asyncHandler(async (req, res) => {
     //TODO: update tweet
     //get tweetId from req.params
@@ -165,6 +234,7 @@ const deleteTweet = asyncHandler(async (req, res) => {
 export {
     createTweet,
     getUserTweets,
+    getTweets,
     updateTweet,
     deleteTweet
 }
