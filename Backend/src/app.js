@@ -45,5 +45,15 @@ app.use("/api/v1/playlists",playlistRouter)
 app.use("/api/v1/subscriptions",subscriptionRouter)
 app.use("/api/v1/tweets",tweetRouter)
 
+//global error middleware
+app.use((err, req, res, next) => {
+  console.error("ERROR:", err);   // optional but useful
+
+  res.status(err.statusCode || 500).json({
+    success: false,
+    message: err.message || "Internal server error",
+    errors: err.errors || []
+  });
+});
 
 export { app }

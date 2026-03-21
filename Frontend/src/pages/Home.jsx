@@ -1,6 +1,6 @@
 import { useState } from "react";
-import VideoCard from "../components/VideoCard";
-import TweetCard from "../components/TweetCard";
+import VideoCard from "../components/VideoCard.jsx";
+import TweetCard from "../components/TweetCard.jsx";
 
 const TABS = ["Videos", "Tweets"];
 
@@ -31,7 +31,7 @@ function Home() {
     >
       {/* Header */}
       {/* Tabs */}
-        <div className="flex px-7 border-b border-white/[0.06]">
+        <div className="flex px-7 pt-4 border-b border-white/[0.06]">
         {TABS.map(tab => (
           <button
             key={tab}
