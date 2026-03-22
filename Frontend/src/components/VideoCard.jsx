@@ -1,8 +1,6 @@
 import { useState } from "react";
 import Avatar from "./Avatar";
-function timeAgo(inputTime) {
-  console.log(inputTime);
-  
+function timeAgo(inputTime) {  
   const now = new Date();
   const past = new Date(inputTime);
 

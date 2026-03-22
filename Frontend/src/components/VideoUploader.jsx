@@ -100,7 +100,7 @@ const VideoUploader = ({ onSubmit, loading }) => {
         <input ref={videoRef} type="file" accept="video/*" className="hidden" onChange={(e) => handleVideo(e.target.files[0])} />
       </Field>
 
-      <Field label="Thumbnail" error={errors.thumbnail}>
+      <Field label="Thumbnail" required error={errors.thumbnail}>
         <div className="flex gap-3 items-center">
           <div
             onClick={() => thumbRef.current.click()}
@@ -136,7 +136,7 @@ const VideoUploader = ({ onSubmit, loading }) => {
         />
       </Field>
 
-      <Field label="Description">
+      <Field label="Description" required>
         <textarea
           placeholder="Describe your video…"
           value={data.description}

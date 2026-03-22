@@ -4,7 +4,7 @@ import Auth from "./pages/Auth";
 import Navbar from "./components/Navbar";
 import PrivateRoute from "./components/PrivateRoute";
 import Uploader from "./pages/Uploader";
-
+import SearchVideo from "./pages/SearchVideo";
 function App() {
   return (
     <BrowserRouter>
@@ -16,6 +16,7 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Home />} />
           <Route path="/upload" element={<Uploader/>}/>
+          <Route path="/search" element={<SearchVideo/>}/>
         </Route>{" "}
       </Routes>
     </BrowserRouter>
