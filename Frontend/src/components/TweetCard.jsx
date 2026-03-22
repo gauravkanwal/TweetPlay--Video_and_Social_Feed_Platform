@@ -34,7 +34,7 @@ const TweetCard = ({ tweet }) => {
             className="text-[14px] font-bold text-[#f0f0f2] tracking-tight"
             style={{ fontFamily: "'Syne', sans-serif" }}
           >
-            {tweet.username}
+            {tweet.owner.username}
           </span>
 
           <span className="text-[12px] text-[#4a4a57]">{tweet.handle}</span>
