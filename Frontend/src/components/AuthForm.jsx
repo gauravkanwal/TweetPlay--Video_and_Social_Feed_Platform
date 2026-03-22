@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { API } from "../api/axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
-const EyeIcon = ({ open }) =>
+
+const EyeIcon = ({ open = false } = {}) =>
   open ? (
     <svg
       width="15"
@@ -29,7 +32,7 @@ const EyeIcon = ({ open }) =>
     </svg>
   );
 
-const Field = ({ label, required, error, children }) => (
+const Field = ({ label, required, error, children } = {}) => (
   <div className="flex flex-col gap-1.5">
     <label className="text-xs font-medium text-[#9999aa]">
       {label}
@@ -48,6 +51,9 @@ const inputCls = (hasErr) =>
   }`;
 
 const AuthForm = () => {
+  const navigate = useNavigate();
+  const { setUser } = useAuth();
+
   const [tab, setTab] = useState("register");
 
   const [registerData, setRegisterData] = useState({
@@ -171,10 +177,8 @@ const AuthForm = () => {
       const user = res.data.data.user;
 
       setLoginSuccess(`Welcome back, ${user.username}!`);
-
-      // NEXT STEP (IMPORTANT)
-      // setUser(user)
-      // navigate("/")
+      setUser(user)
+      navigate("/")
     } catch (err) {
       setLoginErrors({
         api: err.response?.data?.message || err.message || "Login failed",
@@ -435,6 +439,7 @@ const AuthForm = () => {
                   {loginErrors.api}
                 </p>
               )}
+
               {loginSuccess && (
                 <p className="text-[12px] text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 rounded-lg px-3 py-2">
                   {loginSuccess}

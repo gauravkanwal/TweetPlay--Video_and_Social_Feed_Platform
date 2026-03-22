@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Navbar from "./components/Navbar";
 import PrivateRoute from "./components/PrivateRoute";
+import Uploader from "./pages/Uploader";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
         {/* All protected routes */}
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Home />} />
-
+          <Route path="/upload" element={<Uploader/>}/>
         </Route>{" "}
       </Routes>
     </BrowserRouter>

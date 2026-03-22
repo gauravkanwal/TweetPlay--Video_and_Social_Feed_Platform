@@ -1,6 +1,8 @@
 import { useState } from "react";
-
+import Avatar from "./Avatar";
 function timeAgo(inputTime) {
+  console.log(inputTime);
+  
   const now = new Date();
   const past = new Date(inputTime);
 
@@ -79,18 +81,7 @@ const VideoCard = ({ video }) => {
       <div className="flex gap-3 mt-3.5">
 
         {/* Avatar */}
-        <div className="relative flex-shrink-0">
-          <img
-            src={video.avatar}
-            alt={video.username}
-            className="w-9 h-9 rounded-full object-cover border-2 border-neutral-800 transition-colors duration-300 group-hover:border-orange-500"
-          />
-          <div
-            className="absolute inset-[-3px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            style={{ background: "linear-gradient(135deg, #f97316, #fb923c)", WebkitMask: "linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)", WebkitMaskComposite: "xor", maskComposite: "exclude", padding: "1.5px" }}
-          />
-        </div>
-
+        <Avatar src={video.owner.avatar}/>
         {/* Text */}
         <div className="flex-1 min-w-0">
           <h3
@@ -103,7 +94,7 @@ const VideoCard = ({ video }) => {
           <div className="flex items-center gap-1.5 mt-1.5">
             <span className="text-[11.5px] text-orange-500 font-medium">@{video.owner.username}</span>
             <div className="w-0.5 h-0.5 rounded-full bg-neutral-600" />
-            <span className="text-[11.5px] text-neutral-500">{video.views} views · {timeAgo(video.date)}</span>
+            <span className="text-[11.5px] text-neutral-500">{video.views} views · {timeAgo(video.createdAt)}</span>
           </div>
 
         </div>

@@ -16,7 +16,7 @@ const router = Router();
 router.route('/').get(getAllVideos);
 
 // Protected routes
-router.route('/publish').post(
+router.route('/').post(
     verifyJWT,
     upload.fields([
         {

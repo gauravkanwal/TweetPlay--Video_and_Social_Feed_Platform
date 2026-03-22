@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import fs from "fs";
 import {
   uploadOnCloudinary,
   deleteFromCloudinary,
@@ -128,8 +129,23 @@ const publishAVideo = asyncHandler(async (req, res) => {
   const videoFile = await uploadOnCloudinary(videoFileLocalPath);
   const thumbnailFile = await uploadOnCloudinary(thumbnailLocalPath);
 
+  // Cleanup local files explicitly if upload utility didn't
+  const cleanupLocalFiles = () => {
+    try {
+      if (videoFileLocalPath && fs.existsSync(videoFileLocalPath)) {
+        fs.unlinkSync(videoFileLocalPath);
+      }
+      if (thumbnailLocalPath && fs.existsSync(thumbnailLocalPath)) {
+        fs.unlinkSync(thumbnailLocalPath);
+      }
+    } catch (err) {
+      console.error("Error cleaning up local files:", err);
+    }
+  };
+
   if (!videoFile?.url || !thumbnailFile?.url) {
-    throw new ApiError(400, "Uplaoding on cloudinary failed");
+    cleanupLocalFiles();
+    throw new ApiError(400, "Uploading on cloudinary failed");
   }
 
   const video = await Video.create({
@@ -146,6 +162,9 @@ const publishAVideo = asyncHandler(async (req, res) => {
     duration: videoFile.duration,
     owner: req.user._id,
   });
+
+  // Extra cleanup after DB creation
+  cleanupLocalFiles();
 
   if (!video) {
     throw new ApiError(400, "Something went wrong");
