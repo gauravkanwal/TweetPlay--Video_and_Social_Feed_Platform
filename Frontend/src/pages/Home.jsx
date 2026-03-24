@@ -24,6 +24,10 @@ function Home() {
     }
   };
 
+  const handleTweetDelete = (tweetId) => {
+  setTweets((prev) => prev.filter((t) => t._id !== tweetId));
+  };
+  
   useEffect(() => {
     getVideosAndTweets();
   }, []);
@@ -96,7 +100,7 @@ function Home() {
                 className="animate-[fadeUp_0.4s_ease_both]"
                 style={{ animationDelay: `${i * 60}ms` }}
               >
-                <TweetCard tweet={tweet} />
+                <TweetCard tweet={tweet} onDelete={handleTweetDelete} />
               </div>
             ))}
           </div>

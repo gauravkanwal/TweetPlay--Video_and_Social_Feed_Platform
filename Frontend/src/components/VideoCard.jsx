@@ -41,16 +41,15 @@ const VideoCard = ({ video }) => {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <Link to={`/watch/${video._id}`} className="no-underline">
-      {/* existing card JSX */}
       <div
-        className="w-full cursor-pointer group"
+        className="w-full group"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         style={{ fontFamily: "'DM Sans', sans-serif" }}
       >
         {/* Thumbnail */}
-        <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-neutral-900">
+        <Link to={`/watch/${video._id}`} className="no-underline">
+        <div className="relative w-full aspect-video rounded-xl cursor-pointer overflow-hidden bg-neutral-900">
           <img
             src={video.thumbnail}
             alt={video.title}
@@ -84,6 +83,7 @@ const VideoCard = ({ video }) => {
             {formatDuration(video.duration)}
           </span>
         </div>
+        </Link>
 
         {/* Info */}
         <div className="flex gap-3 mt-3.5">
@@ -110,7 +110,6 @@ const VideoCard = ({ video }) => {
           </div>
         </div>
       </div>
-    </Link>
   );
 };
 
