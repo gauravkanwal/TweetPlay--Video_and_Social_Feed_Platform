@@ -5,7 +5,7 @@ const PrivateRoute = () => {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
-    return <div className="text-white text-center py-20">Loading...</div>;
+    return <div className="text-black text-center py-20">Loading...</div>;
   }
 
   return user ? <Outlet /> : <Navigate to="/auth" replace />;

@@ -163,7 +163,7 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!isPasswordValid) {
     throw new ApiError(
       401,
-      `Invalid user credentials. Debug: ${JSON.stringify(debugInfo)}`
+      `Invalid user credentials. ` //Debug: ${JSON.stringify(debugInfo)}`
     );
   }
 

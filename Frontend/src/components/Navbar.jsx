@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import Avatar from "./Avatar";
 
 const Navbar = () => {
-  const { user,isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
@@ -171,28 +171,24 @@ const Navbar = () => {
         </button>
 
         {/* Profile pill */}
-        {isLoading ? (
-          <div className="w-8 h-8 rounded-full bg-[#1a1a22] animate-pulse" />
-        ) : (
-          <div className="flex items-center gap-2 bg-[#1a1a22] border border-white/[0.07] hover:border-white/[0.14] hover:bg-[#1e1e28] rounded-full pl-1 pr-1 sm:pr-3 py-1 cursor-pointer transition-all duration-200">
-            <Avatar src={user.avatar} alt={user.username} size={28} />
-            <span
-              className="hidden sm:block text-[12px] font-bold text-[#c8c8d4] tracking-tight"
-              style={{ fontFamily: "'Syne', sans-serif" }}
-            >
-              {user.username}
-            </span>
-            <svg
-              className="hidden sm:block w-3 h-3"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#4a4a57"
-              strokeWidth="2"
-            >
-              <polyline points="6 9 12 15 18 9" />
-            </svg>
-          </div>
-        )}
+        <div className="flex items-center gap-2 bg-[#1a1a22] border border-white/[0.07] hover:border-white/[0.14] hover:bg-[#1e1e28] rounded-full pl-1 pr-1 sm:pr-3 py-1 cursor-pointer transition-all duration-200">
+          <Avatar src={user.avatar} alt={user.username} size={28} />
+          <span
+            className="hidden sm:block text-[12px] font-bold text-[#c8c8d4] tracking-tight"
+            style={{ fontFamily: "'Syne', sans-serif" }}
+          >
+            {user.username}
+          </span>
+          <svg
+            className="hidden sm:block w-3 h-3"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#4a4a57"
+            strokeWidth="2"
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
       </div>
     </nav>
   );
