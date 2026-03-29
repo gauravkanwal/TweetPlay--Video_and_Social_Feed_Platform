@@ -96,6 +96,7 @@ const CommentCard = ({ comment, onDelete, onUpdate }) => {
       <Avatar
         src={comment.owner?.avatar}
         alt={comment.owner?.fullName}
+        username={comment.owner?.username}
         size={36}
       />
 

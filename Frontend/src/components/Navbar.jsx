@@ -172,7 +172,7 @@ const Navbar = () => {
 
         {/* Profile pill */}
         <div className="flex items-center gap-2 bg-[#1a1a22] border border-white/[0.07] hover:border-white/[0.14] hover:bg-[#1e1e28] rounded-full pl-1 pr-1 sm:pr-3 py-1 cursor-pointer transition-all duration-200">
-          <Avatar src={user.avatar} alt={user.username} size={28} />
+          <Avatar src={user.avatar} alt={user.username} username={user.username} size={28} />
           <span
             className="hidden sm:block text-[12px] font-bold text-[#c8c8d4] tracking-tight"
             style={{ fontFamily: "'Syne', sans-serif" }}

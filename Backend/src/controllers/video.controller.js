@@ -37,7 +37,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
       throw new ApiError(400, "Invalid userId");
     }
 
-    videoProperties.owner = mongoose.Types.ObjectId(userId);
+    videoProperties.owner = new mongoose.Types.ObjectId(userId);
   }
 
   if (query) {
@@ -184,7 +184,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
 const getVideoById = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
   //TODO: get video by id
-  if (!isValidObjectId(videoId) || !(await Video.exists({ _id: videoId }))) {
+  if (!isValidObjectId(videoId)) {
     throw new ApiError(400, "Invalid video ID");
   }
 
@@ -218,14 +218,10 @@ const getVideoById = asyncHandler(async (req, res) => {
         foreignField: "video",
         as: "comments",
         pipeline: [
-          {
-            $sort: {
-              createdAt: -1,
-            },
-          },
-          {
-            $limit: 10,
-          },
+          { $sort: { createdAt: -1 } },
+          { $limit: 10 },
+
+          // owner lookup
           {
             $lookup: {
               from: "users",
@@ -242,11 +238,38 @@ const getVideoById = asyncHandler(async (req, res) => {
               ],
             },
           },
+
+          // likes lookup
+          {
+            $lookup: {
+              from: "likes",
+              localField: "_id",
+              foreignField: "comment",
+              as: "likes",
+            },
+          },
+
           {
             $addFields: {
-              owner: {
-                $first: "$owner",
-              },
+              owner: { $first: "$owner" },
+              likes: { $size: "$likes" },
+              isLiked: req.user?._id
+                ? {
+                    $in: [
+                      new mongoose.Types.ObjectId(req.user._id),
+                      "$likes.likedBy",
+                    ],
+                  }
+                : false,
+            },
+          },
+          {
+            $project: {
+              content: 1,
+              createdAt: 1,
+              owner: 1,
+              likes: 1,
+              isLiked: 1,
             },
           },
         ],
@@ -315,9 +338,14 @@ const getVideoById = asyncHandler(async (req, res) => {
     },
   ]);
 
-  if (!videoDetails.length === 0) {
+  if (videoDetails.length === 0) {
     throw new ApiError(400, "something went wrong while fetching video");
   }
+
+  //adding to the viewers watch history
+  await User.findByIdAndUpdate(req.user._id, {
+    $addToSet: { watchHistory: videoId }, // avoids duplicates
+  });
 
   return res
     .status(200)
@@ -375,9 +403,13 @@ const updateVideo = asyncHandler(async (req, res) => {
     updatedData.description = description;
   }
 
-  const updatedVideo = await Video.findOneAndUpdate({_id:videoId, owner:req.user._id}, updatedData, {
-    new: true,
-  });
+  const updatedVideo = await Video.findOneAndUpdate(
+    { _id: videoId, owner: req.user._id },
+    updatedData,
+    {
+      new: true,
+    }
+  );
 
   if (!updatedVideo) {
     throw new ApiError(400, "Something went wrong while updating the video");

@@ -88,7 +88,7 @@ const VideoCard = ({ video }) => {
         {/* Info */}
         <div className="flex gap-3 mt-3.5">
           {/* Avatar */}
-          <Avatar src={video.owner.avatar} />
+          <Avatar src={video.owner.avatar} username={video.owner.username}/>
           {/* Text */}
           <div className="flex-1 min-w-0">
             <h3

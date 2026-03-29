@@ -1,19 +1,27 @@
-// Avatar.jsx
+import { useNavigate } from "react-router-dom";
+
 const Avatar = ({
   src,
   alt = "",
   size = 40,
   className = "",
   onClick,
+  username,
 }) => {
-  const initials = alt
-    ? alt.substring(0, 2).toUpperCase()
-    : "?";
+  const navigate = useNavigate();
+  const initials = alt ? alt.substring(0, 2).toUpperCase() : "?";
+
+  const handleClick = () => {
+    if (onClick) return onClick();
+    if (username) return navigate(`/profile/${username}`);
+  };
+
+  const isClickable = !!onClick || !!username;
 
   return (
     <div
-      onClick={onClick}
-      className={`rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-orange-500 to-orange-400 ${onClick ? "cursor-pointer" : ""} ${className}`}
+      onClick={handleClick}
+      className={`rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-orange-500 to-orange-400 ${isClickable ? "cursor-pointer hover:opacity-80 transition-opacity duration-150" : ""} ${className}`}
       style={{ width: size, height: size, minWidth: size, minHeight: size }}
     >
       {src ? (

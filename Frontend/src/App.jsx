@@ -6,6 +6,11 @@ import Uploader from "./pages/Uploader";
 import SearchVideo from "./pages/SearchVideo";
 import MainLayout from "./components/MainLayout";
 import WatchPage from "./pages/WatchPage";
+import UpdateVideo from './pages/UpdateVideo'
+import UpdatePlaylist from "./pages/UpdatePlaylist"
+import Profile from "./pages/Profile";
+import ShowPlaylist from "./pages/ShowPlaylist";
+
 function App() {
   return (
     <BrowserRouter>
@@ -19,6 +24,10 @@ function App() {
             <Route path="/upload" element={<Uploader/>}/>
             <Route path="/search" element={<SearchVideo/>}/>
             <Route path="/watch/:videoId" element={<WatchPage />} />
+            <Route path="/update-video/:videoId" element={<UpdateVideo/>}/>
+            <Route path="/update-playlist/:playlistId" element={<UpdatePlaylist/>}/>
+            <Route path="/profile/:username" element={<Profile />} />
+            <Route path="/playlist/:playlistId" element={<ShowPlaylist />} /> 
           </Route>
         </Route>
       </Routes>

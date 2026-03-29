@@ -28,7 +28,7 @@ const OwnerCard = ({ owner }) => {
     >
       {/* Left — avatar + name */}
       <div className="flex items-center gap-3">
-        <Avatar src={owner.avatar} alt={owner.fullName} size={44} />
+        <Avatar src={owner.avatar} alt={owner.fullName} username={owner.username} size={44} />
         <div className="flex flex-col">
           <span
             className="text-[14px] font-bold text-[#f2f2f4] tracking-tight"
