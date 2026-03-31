@@ -25,7 +25,7 @@ function timeAgo(inputTime) {
 const CommentCard = ({ comment, onDelete, onUpdate }) => {
   const { user } = useAuth();
   const isOwner = comment.owner?._id === user._id;
-  console.log(comment.owner);
+  // console.log(comment.owner);
   // console.log(user);
   const [liked, setLiked] = useState(comment.isLiked ?? false);
   const [likeCount, setLikeCount] = useState(comment.likes ?? 0);

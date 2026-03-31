@@ -57,7 +57,7 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
         from: "users",
         localField: "owner",
         foreignField: "_id",
-        as: "ownerDetails",
+        as: "owner",
         pipeline: [
           {
             $project: {
@@ -71,8 +71,8 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
     },
     {
       $addFields: {
-        ownerDetails: {
-          $first: "$ownerDetails",
+        owner: {
+          $first: "$owner",
         },
         totalVideos: {
           $size: "$videos",

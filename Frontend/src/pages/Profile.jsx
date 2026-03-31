@@ -55,7 +55,7 @@ const Profile = () => {
 
   // Edit info modal
   const [editOpen, setEditOpen] = useState(false);
-  const [editForm, setEditForm] = useState({ fullName: "", username: "" });
+  const [editForm, setEditForm] = useState({ fullName: "", email: "" });
   const [editLoading, setEditLoading] = useState(false);
   const [editError, setEditError] = useState("");
 
@@ -135,14 +135,19 @@ const Profile = () => {
 
   // ─── Update account info ─────────────────────────────────────────────────────
   const openEdit = () => {
-    setEditForm({ fullName: channel.fullName, username: channel.username });
+    setEditForm({ fullName: channel.fullName, email: channel.email });
     setEditError("");
     setEditOpen(true);
   };
 
   const submitEdit = async (e) => {
     e.preventDefault();
-    if (!editForm.fullName.trim() || !editForm.username.trim()) return setEditError("All fields required.");
+    if (!editForm.fullName.trim() || !editForm.email.trim()){
+      // console.log(editForm);
+      return setEditError("All fields required.");
+    
+    } 
+      
     setEditLoading(true);
     setEditError("");
     try {
@@ -150,7 +155,7 @@ const Profile = () => {
       setChannel((p) => ({ ...p, ...res.data.data }));
       if (isOwner) setUser((p) => ({ ...p, ...res.data.data }));
       setEditOpen(false);
-      if (editForm.username !== username) navigate(`/profile/${editForm.username}`);
+      // if (editForm.username !== username) navigate(`/profile/${editForm.username}`);
     } catch (err) {
       setEditError(err.response?.data?.message || "Update failed.");
     } finally {
@@ -177,6 +182,7 @@ const Profile = () => {
       setPwError(err.response?.data?.message || "Failed to change password.");
     } finally {
       setPwLoading(false);
+      setPwOpen(false);
     }
   };
 
@@ -438,11 +444,11 @@ const Profile = () => {
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-medium text-[#9999aa]">Username</label>
+                <label className="text-xs font-medium text-[#9999aa]">Email</label>
                 <input
                   type="text"
-                  value={editForm.username}
-                  onChange={(e) => setEditForm({ ...editForm, username: e.target.value })}
+                  value={editForm.email}
+                  onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
                   className={inputCls()}
                 />
               </div>

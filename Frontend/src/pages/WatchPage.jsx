@@ -55,6 +55,7 @@ const WatchPage = () => {
 
         <VideoInfo
           videoId={video._id}
+          ownerId={video.owner._id}
           title={video.title}
           views={video.views}
           createdAt={video.createdAt}

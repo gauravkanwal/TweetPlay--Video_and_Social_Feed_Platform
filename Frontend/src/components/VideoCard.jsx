@@ -79,9 +79,10 @@ const VideoCard = ({ video }) => {
           </div>
 
           {/* Duration badge */}
-          <span className="absolute bottom-2.5 right-2.5 bg-black/75 backdrop-blur-md text-white text-[11px] font-medium tracking-wide px-2 py-0.5 rounded border border-white/10">
+          {video.duration && <span className="absolute bottom-2.5 right-2.5 bg-black/75 backdrop-blur-md text-white text-[11px] font-medium tracking-wide px-2 py-0.5 rounded border border-white/10">
             {formatDuration(video.duration)}
           </span>
+          }
         </div>
         </Link>
 

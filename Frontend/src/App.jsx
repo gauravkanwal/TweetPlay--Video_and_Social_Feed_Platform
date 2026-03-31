@@ -10,6 +10,7 @@ import UpdateVideo from './pages/UpdateVideo'
 import UpdatePlaylist from "./pages/UpdatePlaylist"
 import Profile from "./pages/Profile";
 import ShowPlaylist from "./pages/ShowPlaylist";
+import CreatePlaylist from "./pages/CreatePlaylist";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/update-playlist/:playlistId" element={<UpdatePlaylist/>}/>
             <Route path="/profile/:username" element={<Profile />} />
             <Route path="/playlist/:playlistId" element={<ShowPlaylist />} /> 
+            <Route path="/create-playlist" element={<CreatePlaylist />} /> 
           </Route>
         </Route>
       </Routes>
