@@ -39,7 +39,7 @@ const Navbar = () => {
           <img
             src="/TweetPlay_logo.png"
             alt="TweetPlay"
-            className="w-full h-full rounded-lg object-cover"
+            className="w-full h-full rounded-lg object-contain"
           />
         </div>
         <span

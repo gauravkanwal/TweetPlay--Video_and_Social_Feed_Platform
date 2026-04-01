@@ -471,6 +471,11 @@ const getWatchHistory = asyncHandler(async (req, res) => {
       },
     },
     {
+      $sort:{
+        createdAt:-1,
+      }
+    },
+    {
       $lookup: {
         from: "videos",
         localField: "watchHistory",

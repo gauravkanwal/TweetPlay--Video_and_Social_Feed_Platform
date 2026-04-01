@@ -40,6 +40,8 @@ function formatDuration(seconds) {
 const VideoCard = ({ video }) => {
   const [hovered, setHovered] = useState(false);
 
+  if(!video) return null
+
   return (
       <div
         className="w-full group"
@@ -89,7 +91,7 @@ const VideoCard = ({ video }) => {
         {/* Info */}
         <div className="flex gap-3 mt-3.5">
           {/* Avatar */}
-          <Avatar src={video.owner.avatar} username={video.owner.username}/>
+          <Avatar src={video.owner?.avatar} username={video.owner.username}/>
           {/* Text */}
           <div className="flex-1 min-w-0">
             <h3

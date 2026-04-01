@@ -6,13 +6,14 @@ import VideoPlayer from "../components/VideoPlayer";
 import VideoInfo from "../components/VideoInfo";
 import OwnerCard from "../components/OwnerCard";
 import CommentSection from "../components/CommentSection";
+import { useNavigate } from "react-router-dom";
 
 const WatchPage = () => {
   const { videoId } = useParams();
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+  const navigate=useNavigate();
   useEffect(() => {
     const fetchVideo = async () => {
       setLoading(true);
@@ -50,6 +51,23 @@ const WatchPage = () => {
       className="min-h-screen bg-[#0c0c0f] text-white"
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
+      {/* Back */}
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-2 text-[#5a5a6e] hover:text-[#f2f2f4] transition-colors duration-150 mb-6 text-[13px] p-2"
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path d="M19 12H5M12 5l-7 7 7 7" />
+        </svg>
+        Back
+      </button>
       <div className="max-w-4xl mx-auto px-4 sm:px-7 py-6">
         <VideoPlayer src={video.videoFile} poster={video.thumbnail} />
 
@@ -73,7 +91,7 @@ const WatchPage = () => {
           </div>
         )}
 
-        <CommentSection videoId={video._id}/>
+        <CommentSection videoId={video._id} />
       </div>
     </div>
   );
