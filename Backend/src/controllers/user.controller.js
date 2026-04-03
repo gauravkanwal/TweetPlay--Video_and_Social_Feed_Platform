@@ -5,8 +5,10 @@ import { uploadOnCloudinary,deleteFromCloudinary } from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import {validateEmail} from '../utils/validateEmail.js'
 import bcrypt from 'bcrypt'
 import { response } from "express";
+
 
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
@@ -36,20 +38,27 @@ const registerUser = asyncHandler(async (req, res) => {
   // remove password and refresh token field from response
   // check for user creation
   // return res
-
+  
   const { fullName, email, username, password } = req.body;
   //console.log("email: ", email);
-
   if (
     [fullName, email, username, password].some((field) => field?.trim() === "")
   ) {
     throw new ApiError(400, "All fields are required");
   }
+  
+  const emailValidation = validateEmail(email);
+  if(!emailValidation.valid){
+    throw new ApiError(400, emailValidation.message)
+  }
+
+
+  const normalizedEmail=emailValidation.email;//normalized email
 
   const existedUser = await User.findOne({
-    $or: [{ username }, { email }],
+    $or: [{ username:username.toLowerCase() }, { email:normalizedEmail }],
   });
-
+  
   if (existedUser) {
     throw new ApiError(409, "User with email or username already exists");
   }
@@ -86,7 +95,7 @@ const registerUser = asyncHandler(async (req, res) => {
     coverImage: coverImage?.secure_url || "",
     coverImagePublicId: coverImage?.public_id || "",
     coverImageResourceType: coverImage?.resource_type || "",
-    email,
+    email:normalizedEmail,
     password,
     username: username.toLowerCase(),
   });
@@ -298,12 +307,24 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
+  const emailValidation = validateEmail(email);
+  if(!emailValidation.valid){
+    throw new ApiError(400, emailValidation.message)
+  }
+
+  const normalizedEmail=emailValidation.email;//normalized email
+
+  const existingUser = await User.findOne({ email:normalizeEmail });
+  if (existingUser && req.user._id.toString() !== existingUser._id.toString()) {
+  throw new ApiError(400, "Email already registered" );
+  }
+
   const user = await User.findByIdAndUpdate(
     req.user?._id,
     {
       $set: {
         fullName,
-        email,
+        email:normalizedEmail,
       },
     },
     { new: true }
