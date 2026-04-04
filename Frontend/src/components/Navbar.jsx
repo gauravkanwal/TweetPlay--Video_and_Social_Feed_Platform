@@ -39,6 +39,7 @@ const Navbar = () => {
     setLogoutLoading(true);
     try {
       await API.post("/users/logout");
+      localStorage.removeItem("accessToken");
       setUser(null);
       navigate("/auth");
     } catch (err) {

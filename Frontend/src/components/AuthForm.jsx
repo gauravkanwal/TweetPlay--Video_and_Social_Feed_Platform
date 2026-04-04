@@ -173,7 +173,8 @@ const AuthForm = () => {
 
     try {
       const res = await API.post("/users/login", payload);
-
+      localStorage.setItem("accessToken", res.data.data.accessToken);//storing token locally
+      localStorage.setItem("refreshToken", res.data.data.refreshToken);//storing token locally
       const user = res.data.data.user;
 
       setLoginSuccess(`Welcome back, ${user.username}!`);
