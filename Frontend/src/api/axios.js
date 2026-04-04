@@ -3,8 +3,10 @@ import axios from "axios";
 export const API = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true
+
 });
 
+// attach access token
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
 
@@ -13,17 +15,19 @@ API.interceptors.request.use((config) => {
   }
 
   return config;
-});//sending token from frontend as browser can block the jwt token because of different domains
+});
 
+// handle refresh
 API.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    if (originalRequest.url.includes("/refresh-token")) {
+    // skip refresh endpoint
+    if (originalRequest?.url?.includes("/refresh-token")) {
       return Promise.reject(error);
     }
-    // if token expired
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -31,21 +35,18 @@ API.interceptors.response.use(
         const refreshToken = localStorage.getItem("refreshToken");
 
         const res = await axios.post(
-          `${import.meta.env.VITE_API_URL}/users/refresh-token`,
+          `${import.meta.env.VITE_API_URL}/api/v1/users/refresh-token`,
           { refreshToken }
         );
 
         const newAccessToken = res.data.accessToken;
 
-        // store new token
         localStorage.setItem("accessToken", newAccessToken);
 
-        // retry original request
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return API(originalRequest);
 
       } catch (err) {
-        // refresh failed → logout
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         window.location.href = "/auth";
