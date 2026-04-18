@@ -68,11 +68,11 @@ export default function Landing() {
   }, [user, isLoading]);
 
   // Show nothing while auth state is resolving
-  if (isLoading) return (
-    <div className="min-h-screen bg-[#0b0b10] flex items-center justify-center">
-      <div className="w-5 h-5 rounded-full border-2 border-orange-500 border-t-transparent animate-spin" />
-    </div>
-  );
+//   if (isLoading) return (
+//     <div className="min-h-screen bg-[#0b0b10] flex items-center justify-center">
+//       <div className="w-5 h-5 rounded-full border-2 border-orange-500 border-t-transparent animate-spin" />
+//     </div>
+//   );
   
 
   return (
