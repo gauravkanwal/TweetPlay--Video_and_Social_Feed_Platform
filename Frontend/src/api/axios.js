@@ -59,10 +59,6 @@ API.interceptors.response.use(
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
 
-        if (window.location.pathname !== "/auth") {
-          window.location.href = "/auth";
-        }
-
         return Promise.reject(err);
       }
     }

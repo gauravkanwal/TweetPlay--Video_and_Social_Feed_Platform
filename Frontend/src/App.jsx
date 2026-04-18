@@ -11,18 +11,20 @@ import UpdatePlaylist from "./pages/UpdatePlaylist"
 import Profile from "./pages/Profile";
 import ShowPlaylist from "./pages/ShowPlaylist";
 import CreatePlaylist from "./pages/CreatePlaylist";
+import Landing from "./pages/Landing";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/auth" element={<Auth />} />
+        <Route path="/" element={<Landing />} />
         
         {/* All protected routes */}
         <Route element={<PrivateRoute />}>
           <Route element={<MainLayout />}>
-            <Route path="/" element={<Home />} />
             <Route path="/upload" element={<Uploader/>}/>
+            <Route path="/home" element={<Home/>}/>
             <Route path="/search" element={<SearchVideo/>}/>
             <Route path="/watch/:videoId" element={<WatchPage />} />
             <Route path="/update-video/:videoId" element={<UpdateVideo/>}/>
