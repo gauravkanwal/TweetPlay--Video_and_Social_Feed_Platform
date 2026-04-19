@@ -13,6 +13,9 @@ const uploadOnCloudinary = async (localFilePath) => {
     //upload the file on cloudinary
     const response = await cloudinary.uploader.upload(localFilePath, {
       resource_type: "auto",
+      folder: "tweetplay",
+      quality: "auto",
+      fetch_format: "auto",
     });
 
     //file has been uploaded successfully - delete local file
@@ -21,10 +24,13 @@ const uploadOnCloudinary = async (localFilePath) => {
         fs.unlinkSync(localFilePath);
       }
     } catch (deleteErr) {
-      console.error("Warning: Failed to delete local file after upload:", deleteErr);
+      console.error(
+        "Warning: Failed to delete local file after upload:",
+        deleteErr
+      );
       // Don't throw - let upload succeed even if local cleanup fails
     }
-    
+
     return response;
   } catch (error) {
     console.error("Cloudinary upload error:", error);
@@ -34,21 +40,25 @@ const uploadOnCloudinary = async (localFilePath) => {
         fs.unlinkSync(localFilePath);
       }
     } catch (deleteErr) {
-      console.error("Warning: Failed to delete local file after upload error:", deleteErr);
+      console.error(
+        "Warning: Failed to delete local file after upload error:",
+        deleteErr
+      );
     }
     return null;
   }
 };
 
+const deleteFromCloudinary = async (publicId, resourceType = "image") => {
+  try {
+    const result = await cloudinary.uploader.destroy(publicId, {
+      resource_type: resourceType,
+    });
+    return result;
+  } catch (error) {
+    console.error("Cloudinary deletion error:", error);
+    return null;
+  }
+};
 
-const deleteFromCloudinary=async (publicId,resourceType='image')=>{
-    try {
-        const result=await cloudinary.uploader.destroy(publicId, {resource_type:resourceType} );
-        return result;
-    } catch (error) {
-        console.error("Cloudinary deletion error:", error);
-        return null;
-    }
-}
-
-export { uploadOnCloudinary,deleteFromCloudinary };
+export { uploadOnCloudinary, deleteFromCloudinary };
