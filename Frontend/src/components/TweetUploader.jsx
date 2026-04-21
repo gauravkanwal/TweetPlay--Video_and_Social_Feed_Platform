@@ -1,11 +1,14 @@
 // TweetUploader.jsx
 import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import Avatar from "./Avatar";
 
 const MAX_CHARS = 280;
 
 const TweetUploader = ({ onSubmit, loading }) => {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
+  const { user } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,12 +20,7 @@ const TweetUploader = ({ onSubmit, loading }) => {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="flex gap-3">
-        <div
-          className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 to-orange-400 flex items-center justify-center text-[11px] font-bold text-white flex-shrink-0 mt-0.5"
-          style={{ fontFamily: "'Syne', sans-serif" }}
-        >
-          GD
-        </div>
+        <Avatar src={user.avatar} alt={user.fullName} size={38} />
 
         <div className="flex-1 flex flex-col gap-3">
           <textarea
