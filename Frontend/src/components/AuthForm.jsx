@@ -179,7 +179,7 @@ const AuthForm = () => {
 
       setLoginSuccess(`Welcome back, ${user.username}!`);
       setUser(user)
-      navigate("/")
+      navigate("/home")
     } catch (err) {
       setLoginErrors({
         api: err.response?.data?.message || err.message || "Login failed",
