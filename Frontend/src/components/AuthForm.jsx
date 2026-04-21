@@ -180,9 +180,9 @@ const AuthForm = () => {
       setLoginSuccess(`Welcome back, ${user.username}!`);
       setUser(user)
       navigate("/home")
-    } catch (err) {
+    } catch (err) {            
       setLoginErrors({
-        api: err.response?.data?.message || err.message || "Login failed",
+        api: err.response?.data?.message ||  "Login failed! Please check your credentials again",
       });
     } finally {
       setLoginLoading(false);
